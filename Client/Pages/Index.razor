@@ -1,4 +1,6 @@
 ﻿@page "/"
+@using BlazorApp.Shared
+@inject HttpClient Http
 
 <PageTitle>Index</PageTitle>
 
@@ -8,12 +10,53 @@
     <tr>
         <td><label>Enter Your Location</label></td>
         <td><input id="inputlocation" type="text" title="Enter Your Location"></td>
-    </tr>
-    <tr>
-        <td><button class="btn btn-primary">Find Me</button></td>
-        <td/>
+        <td><button class="btn btn-primary" @onclick="GetWeatherDetails">weather forecasts</button></td>
     </tr>
 </table>
 
 
+@if (forecasts == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Temp. (C)</th>
+                <th>Temp. (F)</th>
+                <th>Summary</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var forecast in forecasts)
+            {
+                <tr>
+                    <td>@forecast.Date.ToShortDateString()</td>
+                    <td>@forecast.TemperatureC</td>
+                    <td>@forecast.TemperatureF</td>
+                    <td>@forecast.Summary</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
 
+@code {
+    private WeatherForecast[] forecasts = new WeatherForecast[] { };
+
+    private async Task GetWeatherDetails()
+    {
+        try
+        {
+            forecasts = await Http.GetFromJsonAsync<WeatherForecast[]>("/api/WeatherForecast") ?? new WeatherForecast[] { };
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.ToString());
+        }
+    }
+
+}

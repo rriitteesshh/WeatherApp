@@ -13,7 +13,6 @@ namespace BlazorApp.Api
     public static class WeatherForecastFunction
     {
        
-
         [FunctionName("WeatherForecast")]
         public static IActionResult Run(
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)] HttpRequest req,

@@ -12,6 +12,7 @@ namespace BlazorApp.Api
 {
     public static class WeatherForecastFunction
     {
+       
 
         [FunctionName("WeatherForecast")]
         public static IActionResult Run(
@@ -32,7 +33,7 @@ namespace BlazorApp.Api
             //using (var response = await client.SendAsync(request))
             //{
             //    response.EnsureSuccessStatusCode();
-            //    var result = await response.Content.ReadAsStringAsync();
+            //    var body = await response.Content.ReadAsStringAsync();
             //    return new OkObjectResult(result);
             //    //Console.WriteLine(body);
             //}
@@ -43,7 +44,7 @@ namespace BlazorApp.Api
             {
                 Date = DateTime.Now.AddDays(index),
                 TemperatureC = temp = randomNumber.Next(-20, 55),
-                //Summary = GetSummary(temp)
+                Summary = " "
             }).ToArray();
 
             return new OkObjectResult(result);

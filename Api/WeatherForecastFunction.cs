@@ -12,25 +12,6 @@ namespace BlazorApp.Api
 {
     public static class WeatherForecastFunction
     {
-        private static string GetSummary(int temp)
-        {
-            var summary = "Mild";
-
-            if (temp >= 32)
-            {
-                summary = "Hot";
-            }
-            else if (temp <= 16 && temp > 0)
-            {
-                summary = "Cold";
-            }
-            else if (temp <= 0)
-            {
-                summary = "Freezing!";
-            }
-
-            return summary;
-        }
 
         [FunctionName("WeatherForecast")]
         public static IActionResult Run(
@@ -51,8 +32,9 @@ namespace BlazorApp.Api
             using (var response = await client.SendAsync(request))
             {
                 response.EnsureSuccessStatusCode();
-                var body = await response.Content.ReadAsStringAsync();
-                Console.WriteLine(body);
+                var result = await response.Content.ReadAsStringAsync();
+                return new OkObjectResult(result);
+                //Console.WriteLine(body);
             }
             //var randomNumber = new Random();
             //var temp = 0;
@@ -64,7 +46,7 @@ namespace BlazorApp.Api
             //    Summary = GetSummary(temp)
             //}).ToArray();
 
-            return new OkObjectResult(result);
+            return null;
         }
     }
 }
